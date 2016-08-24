@@ -20,10 +20,10 @@
 
                     <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Recipes<span class="caret"></span></button>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#">Recipes</a></li>
-                        <li><a href="#">Ingredients</a></li>
+                        <li><a href="#" data-id="0">Recipes</a></li>
+                        <li><a href="#" data-id="1">Ingredients</a></li>
                     </ul>
-                    <button type="button" id="searchRecipe" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    <button type="button" id="searchButton" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                     <button type="button" class="btn btn-primary" id="addRecipe" data-toggle="modal" data-target="#myModal">Add Your Own Recipe</button>
 
                </div><!-- /btn-group -->
@@ -60,18 +60,16 @@
             </div>
 
             <div class="modal-body">
-                <div class="input-group">
+                <div class="input-group input-group-outer">
                     <input type="text" class="form-control p-y-5" id="modal-recipe-name" placeholder="Name of recipe">
                     <input type="text" class="form-control p-y-5" id="modal-recipe-description" placeholder="Description of recipe">
 
-                    <div class="row p-y-5">
-                        <div class="input-group">
-                            <input type="text" class="form-control ingredient-input" placeholder="Add an ingredient">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default modal-add-ingredient" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus-sign"></span></button>
-                                <!-- /btn-group -->
-                            </span>
-                        </div>
+                    <div class="input-group input-group-inner p-y-5 clear-right">
+                        <input type="text" class="form-control ingredient-input" placeholder="Add an ingredient">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default modal-add-ingredient" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                            <!-- /btn-group -->
+                        </span>
                     </div>
                 </div>
             </div>

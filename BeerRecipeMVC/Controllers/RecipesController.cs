@@ -46,7 +46,7 @@ namespace BeerRecipeMVC.Controllers
                 return NotFound();
             }
 
-            List<Recipe> recipeList = await db.Recipes.Where(x => x.Name == name || x.Name.Contains(name)).ToListAsync();
+            List<Recipe> recipeList = await db.Recipes.Where(x => x.Name.Contains(name)).ToListAsync();
             if (recipeList == null || recipeList.Count <= 0)
             {
                 return NotFound();

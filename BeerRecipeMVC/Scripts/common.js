@@ -1,23 +1,29 @@
 ﻿$(document).ready(function () {
 
-    //click handlers
-    $("#searchRecipe").click(function () {
-        var recipe = {
+    //searching for recipe name
+    $("#searchButton").click(function () {
+        var value = {
             Name: $("input").val()
         };
 
-        getRecipe(recipe);
-    });
-
-    //modal functionality
-    $("#myModal .modal-add-ingredient").click(function () {
-        var addRow = ['<div class="input-group">'];
-
-        addRow.push("<input type='text' class='form-control ingredient-input' placeholder='Add an ingredient'><span class='input-group-btn'><button type='button' class='btn btn-default modal-add-ingredient' aria-haspopup='true' aria-expanded='false'><span class='glyphicon glyphicon-plus-sign'></span></button></span></div>");
+        if ($(this).hasClass("ingredient")) {
+            getIngredient(value);
+        }
+        else {
+            getRecipe(value);
+        }
         
-        $(this).closest(".input-group").append(addRow);
     });
 
+    //modal add another ingredient
+    $("#myModal .modal-add-ingredient").click(function () {
+        
+        var inputGroup = $(this).closest(".input-group-inner");
+        var clone = inputGroup.clone(true).find("input").val("").end(); //clone element events but not data
+        clone.appendTo($(".input-group-outer"));
+    });
+
+    //modal save recipe
     $("#modal-save-recipe").click(function () {
         
         var name = $("#modal-recipe-name").val();
@@ -38,6 +44,32 @@
         addRecipe(data);
     });
 
+    //dropdown menu selection functionality
+    $(".dropdown-menu li a").click(function () {
+        var selText = $(this).text();
+        var option = $(this).attr("data-id");
+        var inputGroupParent = $(this).parents('.input-group')
+        var recipeTable = $("#recipe-table");
+        var searchButton = $("#searchButton");
+
+        inputGroupParent.find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+        recipeTable.find(".panel-title").text(selText);
+        recipeTable.find("ul").html('');
+        searchButton.removeClass("ingredient recipe");
+
+        if (option == "0") {
+            inputGroupParent.find("input").attr("placeholder", "Find a recipe");
+            searchButton.addClass("recipe");
+        }
+        else {
+            inputGroupParent.find("input").attr("placeholder", "Find an ingredient");
+            searchButton.addClass("ingredient");
+        }
+    });
+
+
+
+    //get all recipes with name
     function getRecipe(data) {
         $.ajax({
             type: "GET",
@@ -54,6 +86,7 @@
         });
     };
 
+    //save down specific recipe
     function addRecipe(data) {
         $.ajax({
             type: "POST",
@@ -66,6 +99,23 @@
             },
             error: function () {
                 showErrorMessage("Could not add recipe!")
+            }
+        });
+    };
+
+    //get all recipes with name
+    function getIngredient(data) {
+        $.ajax({
+            type: "GET",
+            url: "/Api/Ingredients",
+            dataType: 'json',
+            contentType: 'application/json',
+            data: data,
+            success: function (data) {
+                populateRecipeTable(data);
+            },
+            error: function () {
+                showErrorMessage("Ingredient Not Found!")
             }
         });
     };
@@ -92,7 +142,7 @@
         // create the user list
         var items = [];
         $.each(data, function (index, item) {
-            items.push('<li><a data-id=' + item.ID + '>' + item.Name + '</a></li>');
+            items.push('<div> ID: ' + item.Name + '</div><div> Name: ' + item.Name + '</div><div> Description: ' + item.Description + '</div>');
         });
 
         var result = items.join('');
