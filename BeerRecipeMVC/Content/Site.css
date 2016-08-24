@@ -22,3 +22,18 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.p-y-5 {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.p-y-10 {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.p-y-15 {
+    padding-top:15px;
+    padding-bottom:15px;
+}

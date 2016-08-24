@@ -9,17 +9,6 @@
         getRecipe(recipe);
     });
 
-    $("#addRecipe").click(function () {
-        var recipe = {
-            ID : "1",
-            Name : $("input").val(),
-            Description : "placeholder"
-        };
-
-        addRecipe(recipe);
-    });
-
-
     //modal functionality
     $("#myModal .modal-add-ingredient").click(function () {
         var addRow = ['<div class="input-group">'];
@@ -31,9 +20,14 @@
 
     $("#modal-save-recipe").click(function () {
         
-        var name = $("#recipeName").val();
-        var ingredientList = $(".ingredient-input").map(function () { return $(this).val(); }).get();
-        var description = $("#recipeDescription").val();
+        var name = $("#modal-recipe-name").val();
+        var description = $("#modal-recipe-description").val();
+        var ingredientList = $(".ingredient-input").map(
+            function () {
+                var rObj = {};
+                rObj["Name"] = $(this).val()
+                return rObj;;
+            }).get();
 
         var data = {
             Name: name,
@@ -44,9 +38,7 @@
         addRecipe(data);
     });
 
-    //functionality
     function getRecipe(data) {
-
         $.ajax({
             type: "GET",
             url: "/Api/Recipes",
@@ -54,26 +46,13 @@
             contentType: 'application/json',
             data: data,
             success: function (data) {
-
-                // create the user list
-                var items = ['<ul>'];
-                $.each(data, function (index, item) {
-                    items.push('<li><a' + item.id + '">'
-                            + item.name + '</a></li>');
-                });
-
-                items.push('</ul>');
-
-                var result = items.join('');
-
-                // clear current user list
-                $('#recipeTable').html('');
-
-                // add new user list
-                $(result).appendTo('#recipeTable');
+                populateRecipeTable(data);
+            },
+            error: function () {
+                showErrorMessage("Recipe Not Found!")
             }
         });
-    }
+    };
 
     function addRecipe(data) {
         $.ajax({
@@ -82,8 +61,57 @@
             dataType: 'json',
             contentType: 'application/json',
             data: data ? JSON.stringify(data) : null,
-            success: function () { console.log(data); }
+            success: function () {
+                $("#myModal").modal("hide");
+            },
+            error: function () {
+                showErrorMessage("Could not add recipe!")
+            }
         });
-    }
+    };
 
+    function populateRecipeTable(data) {
+
+        // create the user list
+        var items = [];
+        $.each(data, function (index, item) {
+            items.push('<li><a data-id=' + item.ID + '>' + item.Name + '</a></li>');
+        });
+
+        var result = items.join('');
+        var recipeTable = $('#recipe-table ul');
+
+        // clear current user list
+        recipeTable.html('');
+
+        // add new user list
+        recipeTable.append(result);
+    };
+
+    function populateRecipeDetails(data) {
+        // create the user list
+        var items = [];
+        $.each(data, function (index, item) {
+            items.push('<li><a data-id=' + item.ID + '>' + item.Name + '</a></li>');
+        });
+
+        var result = items.join('');
+
+        // clear current user list
+        $('#recipe-details ul').html('');
+
+        // add new user list
+        $('#recipe-details ul').append(result);
+    };
+
+    function showErrorMessage(message) {
+        var alertPopup = $('.alert-danger');
+
+        alertPopup.html('');
+        alertPopup.append("<strong>" + message + "</strong>");
+        alertPopup.show();
+        alertPopup.fadeTo(2000, 500).slideUp(500, function () {
+            alertPopup.slideUp(500);
+        });
+    };
 });

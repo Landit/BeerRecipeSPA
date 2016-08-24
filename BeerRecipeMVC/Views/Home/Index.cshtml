@@ -6,7 +6,7 @@
     <div class="container">
         <h1>Beer Recipes</h1>
         <p class="lead">
-            Search through a database of beer recipes/ingredients or add your own!
+            Search for specific beer recipes/ingredients or add your own!
         </p>
     </div>
 </div>
@@ -29,8 +29,20 @@
                </div><!-- /btn-group -->
             </div><!-- /input-group -->
         </div><!-- /.col-lg-6 -->
+    </div>
 
-        <div id="recipeTable"></div>
+    <div class="row p-y-15">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default" id="recipe-table">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Recipes</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled"></ul>
+                </div>
+            </div>
+            <div class="alert alert-danger" style="display:none;"></div>
+        </div>
     </div><!-- /row -->
 </div><!-- /container-->
 
@@ -49,15 +61,17 @@
 
             <div class="modal-body">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="recipeName" placeholder="Name of recipe">
-                    <input type="text" class="form-control" id="recipeDescription" placeholder="Description of recipe">
+                    <input type="text" class="form-control p-y-5" id="modal-recipe-name" placeholder="Name of recipe">
+                    <input type="text" class="form-control p-y-5" id="modal-recipe-description" placeholder="Description of recipe">
 
-                    <div class="input-group">
-                        <input type="text" class="form-control ingredient-input" placeholder="Add an ingredient">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default modal-add-ingredient" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus-sign"></span></button>
-                            <!-- /btn-group -->
-                        </span>
+                    <div class="row p-y-5">
+                        <div class="input-group">
+                            <input type="text" class="form-control ingredient-input" placeholder="Add an ingredient">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default modal-add-ingredient" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                <!-- /btn-group -->
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
